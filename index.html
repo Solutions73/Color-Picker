@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Picker</title>
+
+    <style type="text/css">
+        .container {
+            position: relative;
+        }
+
+        #myCanvas {
+            width: 400px;
+            height: 400px;
+            margin-top: 10px;
+            margin-left: 20px;
+            border: 5px solid #000000;
+            cursor: crosshair;
+        }
+
+        #canvas1 {
+            background: linear-gradient(to left, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+            width: 400px;
+            height: 50px;
+            margin-top: 30px;
+            margin-left: 20px;
+            border: 5px solid #000000;
+            cursor: crosshair;
+        }
+
+        #colDisp {
+            position: absolute;
+            left: 470px;
+            top: 20px;
+        }
+
+        #red {
+            background-color: red;
+            color: white;
+        }
+
+        #green {
+            background-color: green;
+            color: white;
+        }
+
+        #blue {
+            background-color: blue;
+            color: white;
+        }
+
+        #out {
+            background: linear-gradient(red, green, blue);
+            color: white;
+        }
+        button {
+            font-size: 12px;
+            padding: 5px
+        }
+        @media only screen and (max-width: 600px) {
+            #myCanvas {
+            width: 254px;
+            height: 250px;
+            margin-top: 10px;
+            margin-left: 5px;
+            border: 3px solid red;
+            cursor: crosshair;
+            }
+            #canvas1 {
+            background: linear-gradient(to left, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+            width: 254px;
+            height: 40px;
+            margin-top: 20px;
+            margin-left: 5px;
+            border: 3px solid red;
+            cursor: crosshair;
+            }
+            #colDisp {
+            position: relative;
+            left: 10px;
+            top: 5px;
+            }
+            #red {
+            background-color: red;
+            color: white;
+            margin-top: 10px;
+            }
+
+            #green {
+            background-color: green;
+            color: white;
+            margin-top: 0px 0px;
+            }
+
+            #blue {
+            background-color: blue;
+            color: white;
+            margin-top: 5px;
+            }
+
+            #out {
+            background: linear-gradient(red, green, blue);
+            color: white;
+            margin-top: 5px;
+            }
+            button {
+            font-size: 12px;
+            margin-top: 5px;
+            padding: 5px
+            }
+    }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <canvas id="myCanvas"></canvas>
+    </div>
+    <div>
+        <canvas id="canvas1"></canvas>
+    </div>
+
+    <div id="colDisp">
+        R: <input type="text" id="red" size="10" /> <br /><br />
+        G: <input type="text" id="green" size="10" /><br /><br />
+        B: <input type="text" id="blue" size="10" /><br /><br />
+
+        Color: <br /><input type="text" id="out" size="13" /><br /><br />
+        <button onclick="myFunction()">CopytoClipboard</button><br /><br />
+
+        Selection:<br /> <input type="text" id="out1" size="13" /><br /><br />
+
+    </div>
+    </div>
+
+    <script type="text/javascript">
+        window.onload = function () {
+
+            var c = document.getElementById("myCanvas");
+            var ctx = c.getContext("2d");
+
+            var gradient = ctx.createLinearGradient(0, 0, 300, 0);
+            gradient.addColorStop(0, "black");
+            gradient.addColorStop(1, "white");
+
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+            c.addEventListener('mousemove', function (event) {
+                let x = event.clientX;
+                let y = event.clientY;
+                let pixel = ctx.getImageData(x, y, 1, 1)['data'];
+                rgb = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
+                document.getElementById("myCanvas").style.backgroundColor = rgb;
+                document.getElementById("red").value = pixel[0];
+                document.getElementById("green").value = pixel[1];
+                document.getElementById("blue").value = pixel[2];
+            })
+
+            var c1 = document.getElementById("canvas1");
+            var ctx1 = c1.getContext("2d");
+
+            c1.addEventListener('click', function (event) {
+                let x1 = event.clientX;
+                let y1 = event.clientY;
+                let pix = ctx1.getImageData(x1, y1, 1, 1)['data'];
+                rgb1 = `rgb(${pix[0]}, ${pix[1]}, ${pix[2]})`;
+                document.getElementById("out1").style.backgroundColor = rgb1;
+                document.getElementById('out').value = rgb1;
+            })
+        }
+        function myFunction() {
+            var copyText = document.getElementById("out");
+            copyText.select();
+            document.execCommand("Copy");
+            alert("Copied the text: " + copyText.value);
+        }
+
+    </script>
+</body>
+
+</html>
+</body>
+
+</html>
